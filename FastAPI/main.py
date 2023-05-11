@@ -1,5 +1,4 @@
 
-
 from fastapi import FastAPI
 import pandas as pd
 from fastapi.responses import HTMLResponse #Utilizado para generar el formato de texto de la pagina de inicio
@@ -32,7 +31,7 @@ semana_es = {
 
 app = FastAPI()
 
-df = pd.read_csv('/Users/ssanjua/Desktop/HENRY 2023/DataScience/DATAFT10/LABS/PI MLs/PI_ML_OPS_pau/Datasets/dataset_limpio_v2.csv')
+df = pd.read_csv('./Datasets/dataset_limpio_v2.csv')
 df['release_date'] = pd.to_datetime(df['release_date'], format='%Y-%m-%d')
 df['month_release'] = df['release_date'].apply(lambda x: meses_es[x.strftime('%B')])
 df['day_of_week_release'] = df['release_date'].apply(lambda x: semana_es[x.strftime('%A')])
@@ -83,7 +82,7 @@ async def welcome():
     </html>
     """
     return message
-#http://127.0.0.1:8000
+
 
 @app.get('/peliculas_mes/{mes}')
 def peliculas_mes(mes:str):
