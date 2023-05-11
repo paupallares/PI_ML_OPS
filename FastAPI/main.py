@@ -72,7 +72,7 @@ async def welcome():
             <li style="margin-bottom: 10px;"><b>Consulta 4:</b>Se ingresa el <b><i>paīs</b></i> y se retorna la <b><i>cantidad de peliculas</b></i> producidas por el mismo. <br>> Se ingresa el nombre del país en inglés con Mayúsculas: ejemplo <b>'/United States of America'</b>  </li>
             <li style="margin-bottom: 10px;"><b>Consulta 5:</b>Se ingresa la <b><i>productora</b></i> y se retorna la <b><i>ganancia total</b></i> y la <b><i>cantidad de peliculas</b></i> producidas por el mismo. <br>> Se ingresa el nombre de la productora con Mayúsculas: ejemplo <b>'/Pixar Animation Studios'</b>  </li>
             <li style="margin-bottom: 10px;"><b>Consulta 6:</b>Se ingresa la <b><i>película</b></i> y se retorna la <b><i>inversión</b></i>, <b><i>ganancia</b></i>,<b><i>retorno</b></i> y el <b><i>año de lanzamiento</b></i> de la película. <br>> Se ingresa el nombre original de la película: ejemplo <b>'/Toy Story'</b>  </li>
-            <li style="margin-bottom: 10px;"><b>Consulta 6:</b>Se ingresa una <b><i>película</b></i> y se retornan <b><i>5 películas</b></i> similares a modo de <i>recomendación</i>. <br>> Se ingresa el nombre original de la película: ejemplo <b>'/Toy Story'</b>  </li>
+            <li style="margin-bottom: 10px;"><b>Consulta 7:</b>Se ingresa una <b><i>película</b></i> y se retornan <b><i>5 películas</b></i> similares a modo de <i>recomendación</i>. <br>> Se ingresa el nombre original de la película: ejemplo <b>'/Toy Story'</b>  </li>
         </ol>
         <p>Para saber cómo buscar y acceder a los datos, leer el archivo README.md donde se encontrará toda la info necesaria.</p>
     </body>
