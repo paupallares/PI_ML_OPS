@@ -1,3 +1,5 @@
+
+
 from fastapi import FastAPI
 import pandas as pd
 from fastapi.responses import HTMLResponse #Utilizado para generar el formato de texto de la pagina de inicio
