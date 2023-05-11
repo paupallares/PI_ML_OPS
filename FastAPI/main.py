@@ -31,10 +31,7 @@ semana_es = {
 
 app = FastAPI()
 
-df = pd.read_csv('./Datasets/dataset_limpio_v2.csv')
-df['release_date'] = pd.to_datetime(df['release_date'], format='%Y-%m-%d')
-df['month_release'] = df['release_date'].apply(lambda x: meses_es[x.strftime('%B')])
-df['day_of_week_release'] = df['release_date'].apply(lambda x: semana_es[x.strftime('%A')])
+df = pd.read_csv('../Datasets/dataset_limpio_v2.csv')
 
 
 #Creamos un directorio index con mensaje de bienvenida
@@ -83,6 +80,9 @@ async def welcome():
     """
     return message
 
+df['release_date'] = pd.to_datetime(df['release_date'], format='%Y-%m-%d')
+df['month_release'] = df['release_date'].apply(lambda x: meses_es[x.strftime('%B')] if pd.notnull(x) else '')
+df['day_of_week_release'] = df['release_date'].apply(lambda x: semana_es[x.strftime('%A')] if pd.notnull(x) else '')
 
 @app.get('/peliculas_mes/{mes}')
 def peliculas_mes(mes:str):
