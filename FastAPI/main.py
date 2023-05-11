@@ -116,6 +116,14 @@ def franquicia(franquicia:str):
     
     return {'franquicia': franquicia, 'cantidad': cantidad, 'ganancia_total': ganancia_total, 'ganancia_promedio': ganancia_promedio}
 
+@app.get('/peliculas_pais/{pais}')
+def peliculas_pais(pais:str):
+    '''Ingresas el pais, retornando la cantidad de peliculas producidas en el mismo'''
+    pais_df = df[df['production_countries'].str.contains(pais, na=False)]
+    cantidad = len(pais_df)
+    
+    return {'pais': pais, 'cantidad': cantidad}
+
 @app.get('/productoras/{productora}')
 def productoras(productora:str):
     '''Ingresas la productora, retornando la ganancia toal y la cantidad de peliculas que produjeron'''
