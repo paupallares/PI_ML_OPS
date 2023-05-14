@@ -31,7 +31,7 @@ semana_es = {
 
 app = FastAPI()
 
-df = pd.read_csv('../Datasets/dataset_limpio_v2.csv')
+df = pd.read_csv('../Datasets/dataset_transformado.csv')
 
 
 #Creamos un directorio index con mensaje de bienvenida
