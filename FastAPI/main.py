@@ -3,6 +3,9 @@ from fastapi import FastAPI
 import pandas as pd
 from fastapi.responses import HTMLResponse #Utilizado para generar el formato de texto de la pagina de inicio
 import numpy as np 
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 meses_es = {
     'January': 'enero',
@@ -32,7 +35,7 @@ semana_es = {
 app = FastAPI()
 
 df = pd.read_csv('../Datasets/dataset_transformado.csv')
-
+small_df = pd.read_csv('../Datasets/dataset_reducido.csv')
 
 #Creamos un directorio index con mensaje de bienvenida
 @app.get("/", response_class=HTMLResponse)
@@ -71,8 +74,9 @@ async def welcome():
             <li style="margin-bottom: 10px;"><b>Consulta 3:</b>Se ingresa la <b><i>franquicia</b></i> y se retorna la <b><i>cantidad de peliculas</b></i>, <b><i>ganancia total</b></i> y <b><i>ganancia promedio</b></i>. <br>> Se ingresa la franquicia con Mayúsculas: ejemplo <b>'/Toy Story Collection'</b>  </li>
             <li style="margin-bottom: 10px;"><b>Consulta 4:</b>Se ingresa el <b><i>paīs</b></i> y se retorna la <b><i>cantidad de peliculas</b></i> producidas por el mismo. <br>> Se ingresa el nombre del país en inglés con Mayúsculas: ejemplo <b>'/United States of America'</b>  </li>
             <li style="margin-bottom: 10px;"><b>Consulta 5:</b>Se ingresa la <b><i>productora</b></i> y se retorna la <b><i>ganancia total</b></i> y la <b><i>cantidad de peliculas</b></i> producidas por el mismo. <br>> Se ingresa el nombre de la productora con Mayúsculas: ejemplo <b>'/Pixar Animation Studios'</b>  </li>
-            <li style="margin-bottom: 10px;"><b>Consulta 6:</b>Se ingresa la <b><i>película</b></i> y se retorna la <b><i>inversión</b></i>, <b><i>ganancia</b></i>,<b><i>retorno</b></i> y el <b><i>año de lanzamiento</b></i> de la película. <br>> Se ingresa el nombre original de la película: ejemplo <b>'/Toy Story'</b>  </li>
-            <li style="margin-bottom: 10px;"><b>Consulta 7:</b>Se ingresa una <b><i>película</b></i> y se retornan <b><i>5 películas</b></i> similares a modo de <i>recomendación</i>. <br>> Se ingresa el nombre original de la película: ejemplo <b>'/Toy Story'</b>  </li>
+            <li style="margin-bottom: 10px;"><b>Consulta 6:</b>Se ingresa la <b><i>película</b></i> y se retorna la <b><i>inversión</b></i>, <b><i>ganancia</b></i>,<b><i>retorno</b></i> y el <b><i>año de lanzamiento</b></i> de la película. <br>> Se ingresa el nombre original de la película: ejemplo <b>'/The Dukes'</b>  </li>
+            <li style="margin-bottom: 10px;"><b>Consulta 7 - ML -:</b>Se ingresa una <b><i>película</b></i> y se retornan <b><i>5 películas</b></i> similares a modo de <i>recomendación</i>. <br>> Se ingresa el nombre original de la película: ejemplo <b>'/The Dukes'</b>  </li>
+            <li style="margin-bottom: 10px;"><b>Consulta TEST:</b>Cree una función muy sencilla porque pensé que nos la pedían para comparar los resultados con una recomendación con un modelo de ML aplicado. Decidí dejarla para comparar de todos modos. Se ingresa una <b><i>película</b></i> y se retornan <b><i>5 películas</b></i> similares a modo de <i>recomendación</i>. <br>> Se ingresa el nombre original de la película: ejemplo <b>'/Toy Story'</b>  </li>
         </ol>
         <p>Para saber cómo buscar y acceder a los datos, leer el archivo README.md donde se encontrará toda la info necesaria.</p>
     </body>
@@ -150,6 +154,29 @@ def retorno(pelicula:str):
     return {'pelicula':pelicula, 'inversion':inversion, 'ganancia':ganancia,'retorno':retorno, 'anio':anio}
 
 @app.get('/recomendacion/{titulo}')
+def recomendacion(titulo:str):
+    '''Ingresas un nombre de pelicula y te recomienda las similares en una lista'''
+    indices = small_df[small_df['title'] == titulo]
+    if indices.empty:
+        return "La película no está en el dataset reducido"
+    idx = indices.index[0]
+    vectorizer = TfidfVectorizer(analyzer='word', stop_words='english')
+    tfidf_matrix = vectorizer.fit_transform(small_df['texto_combinado'])
+    coseno_sim_text = cosine_similarity(tfidf_matrix)
+    vectorizer_features = CountVectorizer(stop_words='english')
+    feature_matrix = vectorizer_features.fit_transform(small_df['combined_features'])
+    coseno_sim_features = cosine_similarity(feature_matrix)
+    combined_similarity = 0.6 * coseno_sim_text + 0.4 * coseno_sim_features
+
+    sim_scores = list(enumerate(combined_similarity[idx]))
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+    sim_scores = sim_scores[1:6]  # Obtenemos las 5 películas más similares
+    movie_indices = [i[0] for i in sim_scores]
+    recommendations=list(small_df['title'].iloc[movie_indices].str.title())
+    
+    return {'lista recomendada': recommendations} 
+
+@app.get('/recomendacionTEST/{titulo}')
 def recomendacion(titulo:str): 
     '''Ingresas un nombre de pelicula y te recomienda las similares en una lista de 5 valores
         como es una funcion basica, los agrupe por genero, 
