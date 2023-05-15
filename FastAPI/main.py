@@ -36,6 +36,7 @@ app = FastAPI()
 
 df = pd.read_csv('../Datasets/dataset_transformado.csv')
 small_df = pd.read_csv('../Datasets/dataset_reducido.csv')
+tiny_df = pd.read_csv('../Datasets/dataset_tiny.csv')
 
 #Creamos un directorio index con mensaje de bienvenida
 @app.get("/", response_class=HTMLResponse)
@@ -156,23 +157,18 @@ def retorno(pelicula:str):
 @app.get('/recomendacion/{titulo}')
 def recomendacion(titulo:str):
     '''Ingresas un nombre de pelicula y te recomienda las similares en una lista'''
-    indices = small_df[small_df['title'] == titulo]
+    indices = tiny_df[tiny_df['title'] == titulo]
     if indices.empty:
         return "La película no está en el dataset reducido"
     idx = indices.index[0]
     vectorizer = TfidfVectorizer(analyzer='word', stop_words='english')
-    tfidf_matrix = vectorizer.fit_transform(small_df['texto_combinado'])
-    coseno_sim_text = cosine_similarity(tfidf_matrix)
-    vectorizer_features = CountVectorizer(stop_words='english')
-    feature_matrix = vectorizer_features.fit_transform(small_df['combined_features'])
-    coseno_sim_features = cosine_similarity(feature_matrix)
-    combined_similarity = 0.6 * coseno_sim_text + 0.4 * coseno_sim_features
-
-    sim_scores = list(enumerate(combined_similarity[idx]))
+    tfidf_matrix = vectorizer.fit_transform(tiny_df['text'])
+    coseno_sim = cosine_similarity(tfidf_matrix)
+    sim_scores = list(enumerate(coseno_sim[idx]))
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
     sim_scores = sim_scores[1:6]  # Obtenemos las 5 películas más similares
     movie_indices = [i[0] for i in sim_scores]
-    recommendations=list(small_df['title'].iloc[movie_indices].str.title())
+    recommendations = list(tiny_df['title'].iloc[movie_indices].str.title())
     
     return {'lista recomendada': recommendations} 
 
