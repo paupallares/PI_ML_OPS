@@ -35,9 +35,10 @@ semana_es = {
 app = FastAPI()
 
 df = pd.read_csv('../Datasets/dataset_transformado.csv')
+df_ml = pd.read_csv('../Datasets/dataset_ML.csv')
 
 #df reducido para el modelo de ML
-sm_df = df.sample(n=2000, random_state=42) 
+sm_df = df_ml.sample(n=2000, random_state=42) 
 vectorizerTF = TfidfVectorizer(analyzer='word', stop_words='english')
 tfidf_matrixTF = vectorizerTF.fit_transform(sm_df['texto_combinado'])
 coseno_sim_text = cosine_similarity(tfidf_matrixTF)
