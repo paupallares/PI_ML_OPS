@@ -1,7 +1,7 @@
 
 
 </p>
-<div style="display: flex; margin-left: 35px; align-items: center;">
+<div style="display: flex; margin-left: 20px; align-items: center;">
   <h2 style="text-align: left;">[Machine Learning Operations (MLOps)]</h2>
 	
   <img src="https://user-images.githubusercontent.com/67664604/217914153-1eb00e25-ac08-4dfa-aaf8-53c09038f082.png" height="150" style="margin-left: 20px;">
@@ -14,7 +14,6 @@
 #### 
 
 <hr>  
-<title>Contenidos</title> 
 </head>
 <body>
   <h3>Contenidos</h3> 
