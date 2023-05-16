@@ -141,7 +141,7 @@ Lamentablemente render.com limita el uso de memoria RAM para suscripciones gratu
 ####   <h2 id="tools" style="text-align: center;">HERRAMIENTAS USADAS :books:</h2>  
 
 <p align="center">
-<img src="https://github.com/paupallares/PI_ML_OPS/blob/main/src/librerias.png"  height=400>
+<img src="https://github.com/paupallares/PI_ML_OPS/blob/main/src/librerias.png"  height=300>
 </p>
 
    
