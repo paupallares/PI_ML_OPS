@@ -35,8 +35,16 @@ semana_es = {
 app = FastAPI()
 
 df = pd.read_csv('../Datasets/dataset_transformado.csv')
-small_df = pd.read_csv('../Datasets/dataset_reducido.csv')
-tiny_df = pd.read_csv('../Datasets/dataset_tiny.csv')
+
+#df reducido para el modelo de ML
+sm_df = df.sample(n=2000, random_state=42) 
+vectorizerTF = TfidfVectorizer(analyzer='word', stop_words='english')
+tfidf_matrixTF = vectorizerTF.fit_transform(sm_df['texto_combinado'])
+coseno_sim_text = cosine_similarity(tfidf_matrixTF)
+vectorizer_features = CountVectorizer(stop_words='english')
+feature_matrix = vectorizer_features.fit_transform(sm_df['combined_features'])
+coseno_sim_features = cosine_similarity(feature_matrix)
+combined_similarity = 0.6 * coseno_sim_text + 0.4 * coseno_sim_features
 
 #Creamos un directorio index con mensaje de bienvenida
 @app.get("/", response_class=HTMLResponse)
@@ -70,14 +78,14 @@ async def welcome():
         <h1>¡Bienvenido a la interfaz de consultas de películas!</h1>
         <p><b>Se pueden realizar 7 tipos de consultas:</b></p>
         <ol>
-            <li style="margin-bottom: 10px;"><b>Consulta 1:</b> Se ingresa el <b><i>mes</b></i> y se retorna la <b><i>cantidad de peliculas</b></i> que se estrenaron ese mes históricamente.<br>> Se ingresa el nombre del mes, en español y minúscula: ejemplo <b>'/enero'</b> </li>
-            <li style="margin-bottom: 10px;"><b>Consulta 2:</b>Se ingresa el <b><i>dia</b></i> y se retorna la <b><i>cantidad de peliculas</b></i> que se estrenaron ese dia históricamente.<br>> Se ingresa el nombre del dia, en español y minúscula: ejemplo <b>'/lunes'</b> </li>
-            <li style="margin-bottom: 10px;"><b>Consulta 3:</b>Se ingresa la <b><i>franquicia</b></i> y se retorna la <b><i>cantidad de peliculas</b></i>, <b><i>ganancia total</b></i> y <b><i>ganancia promedio</b></i>. <br>> Se ingresa la franquicia con Mayúsculas: ejemplo <b>'/Toy Story Collection'</b>  </li>
-            <li style="margin-bottom: 10px;"><b>Consulta 4:</b>Se ingresa el <b><i>paīs</b></i> y se retorna la <b><i>cantidad de peliculas</b></i> producidas por el mismo. <br>> Se ingresa el nombre del país en inglés con Mayúsculas: ejemplo <b>'/United States of America'</b>  </li>
-            <li style="margin-bottom: 10px;"><b>Consulta 5:</b>Se ingresa la <b><i>productora</b></i> y se retorna la <b><i>ganancia total</b></i> y la <b><i>cantidad de peliculas</b></i> producidas por el mismo. <br>> Se ingresa el nombre de la productora con Mayúsculas: ejemplo <b>'/Pixar Animation Studios'</b>  </li>
-            <li style="margin-bottom: 10px;"><b>Consulta 6:</b>Se ingresa la <b><i>película</b></i> y se retorna la <b><i>inversión</b></i>, <b><i>ganancia</b></i>,<b><i>retorno</b></i> y el <b><i>año de lanzamiento</b></i> de la película. <br>> Se ingresa el nombre original de la película: ejemplo <b>'/The Dukes'</b>  </li>
-            <li style="margin-bottom: 10px;"><b>Consulta 7 - ML -:</b>Se ingresa una <b><i>película</b></i> y se retornan <b><i>5 películas</b></i> similares a modo de <i>recomendación</i>. <br>> Se ingresa el nombre original de la película: ejemplo <b>'/The Dukes'</b>  </li>
-            <li style="margin-bottom: 10px;"><b>Consulta TEST:</b>Cree una función muy sencilla porque pensé que nos la pedían para comparar los resultados con una recomendación con un modelo de ML aplicado. Decidí dejarla para comparar de todos modos. Se ingresa una <b><i>película</b></i> y se retornan <b><i>5 películas</b></i> similares a modo de <i>recomendación</i>. <br>> Se ingresa el nombre original de la película: ejemplo <b>'/Toy Story'</b>  </li>
+            <li style="margin-bottom: 10px;"><b>Consulta 1:</b> Se ingresa el <b><i>mes</b></i> y se retorna la <b><i>cantidad de peliculas</b></i> que se estrenaron ese mes históricamente.<br>> Se ingresa el nombre del mes, en español y minúscula: ejemplo: .com/peliculas_mes<b>'/enero'</b> </li>
+            <li style="margin-bottom: 10px;"><b>Consulta 2:</b>Se ingresa el <b><i>dia</b></i> y se retorna la <b><i>cantidad de peliculas</b></i> que se estrenaron ese dia históricamente.<br>> Se ingresa el nombre del dia, en español y minúscula: ejemplo: com/peliculas_dia<b>'/lunes'</b> </li>
+            <li style="margin-bottom: 10px;"><b>Consulta 3:</b>Se ingresa la <b><i>franquicia</b></i> y se retorna la <b><i>cantidad de peliculas</b></i>, <b><i>ganancia total</b></i> y <b><i>ganancia promedio</b></i>. <br>> Se ingresa la franquicia con Mayúsculas: ejemplo: .com/franquicia<b>'/Toy Story Collection'</b>  </li>
+            <li style="margin-bottom: 10px;"><b>Consulta 4:</b>Se ingresa el <b><i>paīs</b></i> y se retorna la <b><i>cantidad de peliculas</b></i> producidas por el mismo. <br>> Se ingresa el nombre del país en inglés con Mayúsculas: ejemplo: peliculas_pais<b>'/United States of America'</b>  </li>
+            <li style="margin-bottom: 10px;"><b>Consulta 5:</b>Se ingresa la <b><i>productora</b></i> y se retorna la <b><i>ganancia total</b></i> y la <b><i>cantidad de peliculas</b></i> producidas por el mismo. <br>> Se ingresa el nombre de la productora con Mayúsculas: ejemplo: .com/productoras<b>'/Pixar Animation Studios'</b>  </li>
+            <li style="margin-bottom: 10px;"><b>Consulta 6:</b>Se ingresa la <b><i>película</b></i> y se retorna la <b><i>inversión</b></i>, <b><i>ganancia</b></i>,<b><i>retorno</b></i> y el <b><i>año de lanzamiento</b></i> de la película. <br>> Se ingresa el nombre original de la película: ejemplo: .com/retorno<b>'/Toy Story'</b>  </li>
+            <li style="margin-bottom: 10px;"><b>Consulta 7 - ML -:</b>Se ingresa una <b><i>película</b></i> y se retornan <b><i>5 películas</b></i> similares a modo de <i>recomendación</i>. <br>> Se ingresa el nombre original de la película: ejemplo: .com/recomendacion<b>'/The Dukes'</b>  </li>
+            <li style="margin-bottom: 10px;"><b>Consulta TEST:</b>Cree una función muy sencilla porque pensé que nos la pedían para comparar los resultados con una recomendación con un modelo de ML aplicado. Decidí dejarla para comparar de todos modos. Se ingresa una <b><i>película</b></i> y se retornan <b><i>5 películas</b></i> similares a modo de <i>recomendación</i>. <br>> Se ingresa el nombre original de la película: ejemplo: .com/recomendacionTEST<b>'/Toy Story'</b>  </li>
         </ol>
         <p>Para saber cómo buscar y acceder a los datos, leer el archivo README.md donde se encontrará toda la info necesaria.</p>
     </body>
@@ -157,26 +165,17 @@ def retorno(pelicula:str):
 @app.get('/recomendacion/{title}')
 def recomendacion(title:str):
     '''Ingresas un nombre de pelicula y te recomienda las similares en una lista'''
-    indices = small_df[small_df['title'] == title]
+    indices = sm_df[sm_df['title'] == title]
     if indices.empty:
         return "La película no está en el dataset reducido"
 
     idx = indices.index[0]
-    vectorizerTF = TfidfVectorizer(analyzer='word', stop_words='english')
-    tfidf_matrixTF = vectorizerTF.fit_transform(small_df['texto_combinado'])
-    coseno_sim_text = cosine_similarity(tfidf_matrixTF)
-
-    vectorizer_features = CountVectorizer(stop_words='english')
-    feature_matrix = vectorizer_features.fit_transform(small_df['combined_features'])
-    coseno_sim_features = cosine_similarity(feature_matrix)
-
-    combined_similarity = 0.6 * coseno_sim_text + 0.4 * coseno_sim_features
-
+    
     sim_scores = list(enumerate(combined_similarity[idx]))
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
     sim_scores = sim_scores[1:6]  # Obtenemos las 5 películas más similares
     movie_indices = [i[0] for i in sim_scores]
-    movie_titles = [small_df['title'].iloc[i].title() for i in movie_indices]
+    movie_titles = [sm_df['title'].iloc[i].title() for i in movie_indices]
 
     return {'lista recomendada': movie_titles} 
 
