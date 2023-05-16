@@ -39,6 +39,8 @@ df_ml = pd.read_csv('../Datasets/dataset_ML.csv')
 
 #df reducido para el modelo de ML
 sm_df = df_ml.sample(n=2000, random_state=42) 
+#le reseteo el indice para evitar problemas
+sm_df = sm_df.reset_index(drop=True)
 
 
 #Creamos un directorio index con mensaje de bienvenida
