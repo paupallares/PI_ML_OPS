@@ -122,7 +122,9 @@ El sistema consiste en recomendar películas a los usuarios basándose en pelíc
 
 El modelo responde muy bien, con recomendaciones que aparentemente son muy idóneas. Ejemplos:
 
-
+<p align="center">
+<img src="https://github.com/paupallares/PI_ML_OPS/blob/main/src/ejemplos.png"  height=400>
+</p>
 
 <br/>
 
@@ -142,12 +144,11 @@ Lamentablemente render.com limita el uso de memoria RAM para suscripciones gratu
 
 ####   <h2 id="tools" style="text-align: center;">HERRAMIENTAS USADAS :books:</h2>  
 
-
+<p align="center">
+<img src="https://github.com/paupallares/PI_ML_OPS/blob/main/src/librerias.png"  height=400>
+</p>
 
    
 ## <p align=center> :star_struck: MUCHAS GRACIAS :hugs: 
 
 <li><a href="https://www.linkedin.com/in/paupallares/">Linkedin</a></li>
-
-
-``
