@@ -1,5 +1,4 @@
 
-
 </p>
 <div style="display: flex; margin-left: 20px; align-items: center;">
   <h2 style="text-align: left;">[Machine Learning Operations (MLOps)]</h2>
@@ -21,7 +20,7 @@
     <li><a href="https://github.com/paupallares/PI_ML_OPS/blob/main/EDA-An%C3%A1lisis.ipynb">EDA</a></li>
     <li><a href="https://github.com/paupallares/PI_ML_OPS/blob/main/ML-ModeloRecomendacion.ipynb">ML desarrollo algotirmo</a></li>
     <li><a href="https://pi-ml-ops-3gcr.onrender.com/">Proyecto deployado</a></li>
-    <li><a href="#video">Video presentación</a></li>
+    <li><a href="https://youtu.be/OHSTXRbtsqA">Video presentación</a></li>
     <li><a href="#tools">Herramientas usadas</a></li>
   </ul>
 
@@ -134,7 +133,7 @@ Lamentablemente render.com limita el uso de memoria RAM para suscripciones gratu
 
 **`Video`**: :rocket:  
 
-
+https://youtu.be/OHSTXRbtsqA
 
 <br/>
 
