@@ -1,153 +1,153 @@
-<p align=center><img src=https://d31uz8lwfmyn8g.cloudfront.net/Assets/logo-henry-white-lg.png><p>
 
-# <h1 align=center>**`Machine Learning Operations (MLOps)`**</h1>
 
-<p align="center">
-<img src="https://user-images.githubusercontent.com/67664604/217914153-1eb00e25-ac08-4dfa-aaf8-53c09038f082.png"  height=100>
 </p>
+<div style="display: flex; margin-left: 35px; align-items: center;">
+  <h2 style="text-align: left;">[Machine Learning Operations (MLOps)]</h2>
+	
+  <img src="https://user-images.githubusercontent.com/67664604/217914153-1eb00e25-ac08-4dfa-aaf8-53c09038f082.png" height="150" style="margin-left: 20px;">
+</div>
 
-¡Bienvenidos al primer proyecto individual de la etapa de labs! En esta ocasión, deberán hacer un trabajo situándose en el rol de un ***MLOps Engineer***.  
+					> Proyecto Individual  
+
+###  <p align="center"> **Paula Pallares** :technologist:
+
+#### 
 
 <hr>  
+<title>Contenidos</title> 
+</head>
+<body>
+  <h3>Contenidos</h3> 
+  <ul>
+    <li><a href="#objective">Objetivo</a></li>
+    <li><a href="https://github.com/paupallares/PI_ML_OPS/blob/main/ETL-Transformaciones.ipynb">ETL</a></li>
+    <li><a href="https://github.com/paupallares/PI_ML_OPS/blob/main/API-Funciones.ipynb">Funciones API  </a></li>
+    <li><a href="https://github.com/paupallares/PI_ML_OPS/blob/main/EDA-An%C3%A1lisis.ipynb">EDA</a></li>
+    <li><a href="https://github.com/paupallares/PI_ML_OPS/blob/main/ML-ModeloRecomendacion.ipynb">ML desarrollo algotirmo</a></li>
+    <li><a href="https://pi-ml-ops-3gcr.onrender.com/">Proyecto deployado</a></li>
+    <li><a href="#video">Video presentación</a></li>
+    <li><a href="#tools">Herramientas usadas</a></li>
+  </ul>
 
-## **Descripción del problema (Contexto y rol a desarrollar)**
+## <p align=center>:green_circle:  Descripción del proyecto :arrow_down: 
 
-## Contexto
+## <p align=center>:clapper: :movie_camera: :film_strip: :film_projector:  :popcorn: 
 
-Tienes tu modelo de recomendación dando unas buenas métricas :smirk:, y ahora, cómo lo llevas al mundo real? :eyes:
-
-El ciclo de vida de un proyecto de Machine Learning debe contemplar desde el tratamiento y recolección de los datos (Data Engineer stuff) hasta el entrenamiento y mantenimiento del modelo de ML según llegan nuevos datos.
-
-
-## Rol a desarrollar
-
-Empezaste a trabajar como **`Data Scientist`** en una start-up que provee servicios de agregación de plataformas de streaming. El mundo es bello y vas a crear tu primer modelo de ML que soluciona un problema de negocio: un sistema de recomendación que aún no ha sido puesto en marcha! 
-
-Vas a sus datos y te das cuenta que la madurez de los mismos es poca (ok, es nula :sob:): Datos anidados, sin transformar, no hay procesos automatizados para la actualización de nuevas películas o series, entre otras cosas….  haciendo tu trabajo imposible :weary:. 
-
-Debes empezar desde 0, haciendo un trabajo rápido de **`Data Engineer`** y tener un **`MVP`** (_Minimum Viable Product_) para la próxima semana! Tu cabeza va a explotar 🤯, pero al menos sabes cual es, conceptualmente, el camino que debes de seguir :exclamation:. Así que te espantas los miedos y te pones manos a la obra :muscle:
-
-<p align="center">
-<img src="https://github.com/HX-PRomero/PI_ML_OPS/raw/main/src/DiagramaConceptualDelFlujoDeProcesos.png"  height=500>
-</p>
-
-<sub> Nota que aqui se reflejan procesos no herramientas tecnologicas. Has el ejercicio de entender cual herramienta del stack corresponde a cual parte del proceso<sub/>
-
-## **Propuesta de trabajo (requerimientos de aprobación)**
-
-**`Transformaciones`**:  Para este MVP no necesitas perfección, ¡necesitas rapidez! ⏩ Vas a hacer estas, ***y solo estas***, transformaciones a los datos:
+####   <h2 id="objective" style="text-align: center;">OBJETIVO</h2>
 
 
-+ Algunos campos, como **`belongs_to_collection`**, **`production_companies`** y otros (ver diccionario de datos) están anidados, esto es o bien tienen un diccionario o una lista como valores en cada fila, ¡deberán desanidarlos para poder  y unirlos al dataset de nuevo hacer alguna de las consultas de la API! O bien buscar la manera de acceder a esos datos sin desanidarlos.
+- [x] Este proyecto consiste en analizar un dataset de peliculas con el objetivo de aplicar un sistema de recomendación que devuelva 5 películas similares a la elegida. 
 
-+ Los valores nulos de los campos **`revenue`**, **`budget`** deben ser rellenados por el número **`0`**.
-  
-+ Los valores nulos del campo **`release date`** deben eliminarse.
+**`Pasos desarrollados:`** 
 
-+ De haber fechas, deberán tener el formato **`AAAA-mm-dd`**, además deberán crear la columna **`release_year`** donde extraerán el año de la fecha de estreno.
-
-+ Crear la columna con el retorno de inversión, llamada **`return`** con los campos **`revenue`** y **`budget`**, dividiendo estas dos últimas **`revenue / budget`**, cuando no hay datos disponibles para calcularlo, deberá tomar el valor **`0`**.
-
-+ Eliminar las columnas que no serán utilizadas, **`video`**,**`imdb_id`**,**`adult`**,**`original_title`**,**`vote_count`**,**`poster_path`** y **`homepage`**.
-
-<br/>
-
-**`Desarrollo API`**:   Propones disponibilizar los datos de la empresa usando el framework ***FastAPI***. Las consultas que propones son las siguientes:
-
-Deben crear 6 funciones para los endpoints que se consumirán en la API, recuerden que deben tener un decorador por cada una (@app.get(‘/’)).
-  
-+ def peliculas_mes(mes):
-    '''Se ingresa el mes y la funcion retorna la cantidad de peliculas que se estrenaron ese mes (nombre del mes, en str, ejemplo 'enero') historicamente'''
-    return {'mes':mes, 'cantidad':respuesta}
-
-+ def peliculas_dia(dia):
-    '''Se ingresa el dia y la funcion retorna la cantidad de peliculas que se estrenaron ese dia (de la semana, en str, ejemplo 'lunes') historicamente'''
-    return {'dia':dia, 'cantidad':respuesta}
-
-+ def franquicia(franquicia):
-    '''Se ingresa la franquicia, retornando la cantidad de peliculas, ganancia total y promedio'''
-    return {'franquicia':franquicia, 'cantidad':respuesta, 'ganancia_total':respuesta, 'ganancia_promedio':respuesta}
-
-+ def peliculas_pais(pais):
-    '''Ingresas el pais, retornando la cantidad de peliculas producidas en el mismo'''
-    return {'pais':pais, 'cantidad':respuesta}
-
-+ def productoras(productora):
-    '''Ingresas la productora, retornando la ganancia total y la cantidad de peliculas que produjeron'''
-    return {'productora':productora, 'ganancia_total':respuesta, 'cantidad':respuesta}
-
-+ def retorno(pelicula):
-    '''Ingresas la pelicula, retornando la inversion, la ganancia, el retorno y el año en el que se lanzo'''
-    return {'pelicula':pelicula, 'inversion':respuesta, 'ganacia':respuesta,'retorno':respuesta, 'anio':respuesta}
-
-+ def recomendacion('titulo'):
-    '''Ingresas un nombre de pelicula y te recomienda las similares en una lista de 5 valores'''
-    return {'lista recomendada': respuesta}
-
-
-<br/>
-
-
-**`Deployment`**: Conoces sobre [Render](https://render.com/docs/free#free-web-services) y tienes un [tutorial de Render](https://github.com/HX-FNegrete/render-fastapi-tutorial) que te hace la vida mas facil :smile: . Tambien podrias usar [Railway](https://railway.app/), o cualquier otro servicio que permita que la API pueda ser consumida desde la web.
-
-<br/>
-
-**`Análisis exploratorio de los datos`**: _(Exploratory Data Analysis-EDA)_
-
-Ya los datos están limpios, ahora es tiempo de investigar las relaciones que hay entre las variables de los datasets, ver si hay outliers o anomalías (que no tienen que ser errores necesariamente :eyes: ), y ver si hay algún patrón interesante que valga la pena explorar en un análisis posterior. Las nubes de palabras dan una buena idea de cuáles palabras son más frecuentes en los títulos, ¡podría ayudar al sistema de recomendación! Sabes que puedes apoyarte en librerías como _pandas profiling, missingno, sweetviz, autoviz_, entre otros y sacar de allí tus conclusiones 😉
-
-**`Sistema de recomendación`**: 
-
-Una vez que toda la data es consumible por la API, está lista para consumir por los departamentos de Analytics y Machine Learning, y nuestro EDA nos permite entender bien los datos a los que tenemos acceso, es hora de entrenar nuestro modelo de machine learning para armar un sistema de recomendación de películas. El EDA debería incluir gráficas interesantes para extraer datos, como por ejemplo una nube de palabras con las palabras más frecuentes en los títulos de las películas. Éste consiste en recomendar películas a los usuarios basándose en películas similares, por lo que se debe encontrar la similitud de puntuación entre esa película y el resto de películas, se ordenarán según el score de similaridad y devolverá una lista de Python con 5 valores, cada uno siendo el string del nombre de las películas con mayor puntaje, en orden descendente. Debe ser deployado como una función adicional de la API anterior y debe llamarse get_recommendation(titulo: str).
-
-<br/>
-
-**`Video`**: Necesitas que al equipo le quede claro que tus herramientas funcionan realmente! Haces un video mostrando el resultado de las consultas propuestas y de tu modelo de ML entrenado!
-
-<sub> **Spoiler**: El video NO DEBE durar mas de ***7 minutos*** y DEBE mostrar las consultas requeridas en funcionamiento desde la API** y una breve explicacion del modelo utilizado para el sistema de recomendacion. <sub/>
-
-<br/>
-
-## **Criterios de evaluación**
-
-**`Código`**: Prolijidad de código, uso de clases y/o funciones, en caso de ser necesario, código comentado. 
-
-**`Repositorio`**: Nombres de archivo adecuados, uso de carpetas para ordenar los archivos, README.md presentando el proyecto y el trabajo realizado
-
-**`Cumplimiento`** de los requerimientos de aprobación indicados en el apartado `Propuesta de trabajo`
-
-NOTA: Recuerde entregar el link de acceso al video. Puede alojarse en YouTube, Drive o cualquier plataforma de almacenamiento. **Verificar que sea de acceso público**.
-
-<br/>
-Aqui te sintetizamos que es lo que consideramos un MVP aprobatorio, y la diferencia con un producto completo.
-
-
+- [x] ETL : carga, exploración y transformación de datos, nulos, duplicados, eliminación de campos innecesarios.
+- [x] API: creación de 7 funciones básicas para recopilar datos.
+- [x] EDA: análisis exploratorio del dataset, elección y jerarquización de campos y datos, imputación y discretización de algunas variables.
+- [x] ML: para el sistema de recomendación usé una matriz TF-ITF para la interpretación del texto y una matriz de conteo para los metadatos, luego con la similaritud del coseno se procesaron las recomendaciones.
+- [x] Deploy final: haciendo uso de FastAPI y render.com hice un deploy final con todas las funciones* disponibles en este link: <a href="https://pi-ml-ops-3gcr.onrender.com/">< Deploy en render.com ></a>
 
 <p align="center">
-<img src="https://github.com/HX-PRomero/PI_ML_OPS/raw/main/src/MVP_MLops.PNG"  height=250>
+<img src="https://github.com/HX-PRomero/PI_ML_OPS/raw/main/src/DiagramaConceptualDelFlujoDeProcesos.png"  height=400>
 </p>
 
 
-## **Fuente de datos**
+**`Decisiones tomadas:`** :brain: 
 
-+ [Dataset](https://drive.google.com/file/d/1Rp7SNuoRnmdoQMa5LWXuK4i7W1ILblYb/view?usp=sharing): Archivo con los datos que requieren ser procesados, tengan en cuenta que hay datos que estan anidados (un diccionario o una lista como valores en la fila).
-+ [Diccionario de datos](https://docs.google.com/spreadsheets/d/1QkHH5er-74Bpk122tJxy_0D49pJMIwKLurByOfmxzho/edit#gid=0): Diccionario con algunas descripciones de las columnas disponibles en el dataset.
+Para el modelo de recomendación decidí utilizar campos que me dieran información sobre la trama, temática y tono de la película, dándole importancia al género y teniendo en consideración si la película es nueva o antigua y los idiomas hablados en el film para tratar de llegar a gustos más particulares.
+Descarté rapidamente las variables numéricas relacionadas con dinero, solo dejé popularidad y puntaje (vote_average) para usarlas como filtro y recomendar así películas que sean famosas o populares, les apliqué MinMaxScaler y StandardScaler para standarizar los valores pero dejé el filtro fuera del modelo entregado por costos computacionales. 
+Para los datos de texto usé dos vectores, el TF-IDF para 'overview' y 'tagline' para extraer mejor la relación entre las palabras e identificar su importancia y usé Vector Count para 'genres' (x2 para darle más jerarquía), 'decade' y 'spoken_languages' para contabilizar la frecuencia de los términos ya que considero que estos datos se asemejan más a 'metadatos' que a un procesamiento de lenguaje natural. En ambas matrices obtengo similaritud por coseno para luego sacar la similaritud del coseno entre ambas matrices dandole un peso superior a la matriz TF-IDF (60/40) ya que considero que la temática y trama deberían ser más influyentes en la recomendación.
+
+
+					𝑐𝑜𝑠𝑖𝑛𝑒(𝑥,𝑦)=  𝑥.𝑦⊺
+						  ||𝑥||.||𝑦||
+
+
+
+## **DESARROLLO** :chart_with_upwards_trend: 
+
+- **`ETL`**: :mag_right: <br>
+ 					desanidar campos  :white_check_mark: <br>
+  					valores nulos a 0 :white_check_mark: <br>
+					valores nulos eliminados :white_check_mark: <br>
+					fechas a datetime :white_check_mark: <br>
+					campo 'release_year' con año de estreno :white_check_mark: <br>
+					crear columna de retorno de inversión :white_check_mark: <br>
+					elimnar columnas que no se usarán :white_check_mark: <br>
+
+- **`API`**: :computer: <br> 
+
+:small_orange_diamond: **FUNCION 1:** se ingresa el mes y se retorna la cantidad de peliculas que se estrenaron ese mes históricamente.
+> Nombre del mes, en español y minúscula: ejemplo: **`.com/peliculas_mes/enero`**<br><br>
+
+:small_blue_diamond: **FUNCION 2:** se ingresa el dia y se retorna la cantidad de peliculas que se estrenaron ese dia históricamente.
+> Se ingresa el nombre del dia, en español y minúscula: ejemplo: **`.com/peliculas_dia/lunes`**<br><br>
+
+:small_orange_diamond: **FUNCION 3:** se ingresa la franquicia y se retorna la cantidad de peliculas, ganancia total y ganancia promedio.
+> Se ingresa la franquicia con Mayúsculas: ejemplo: **`.com/franquicia/Toy Story Collection`**<br><br>
+
+:small_blue_diamond: **FUNCION 4:** se ingresa el paīs y se retorna la cantidad de peliculas producidas por el mismo.
+> Se ingresa el nombre del país en inglés con Mayúsculas: ejemplo: **`.com/peliculas_pais/United States of America`**<br><br>
+
+:small_orange_diamond: **FUNCION 5:** se ingresa la productora y se retorna la ganancia total y la cantidad de peliculas producidas por el mismo.
+> Se ingresa el nombre de la productora con Mayúsculas: ejemplo: **`.com/productoras/Pixar Animation Studio`**<br><br>
+
+:small_blue_diamond: **FUNCION 6:** se ingresa la película y se retorna la inversión, ganancia,retorno y el año de lanzamiento de la película.
+> Se ingresa el nombre original de la película: ejemplo: **`.com/retorno/Toy Story`** <br><br>
+
+:green_square: **FUNCION 7 - ML:** se ingresa una película y se retornan 5 películas similares a modo de recomendación.
+> Se ingresa el nombre original de la película: ejemplo: **`.com/recomendacion/The Dukes`** <br><br>
+
+:interrobang:  **FUNCION TEST:** se ingresa una película y se retornan 5 películas similares a modo de recomendación, solo por gênero.
+> Se ingresa el nombre original de la película: ejemplo: **`.com/recomendacionTEST/Avatar`** <br><br>
+
+
+**`EDA`**: (Exploratory Data Analysis-EDA) :bar_chart: 
+
+Usé *_pandas profiling*, para tener un resumen rápido y efectivo de los datos. Eliminé duplicados, nulos y corregí algunas categorías que tenían valores erroneos como 'popularity' o 'genres'. Decidí mantener para mi modelo las columnas: <br>
+ + **'genres'** : es muy determinante ya que la escencia de como se cuenta una historia esta muy anclada en el género, dos peliculas pueden ser sobre una historia de amor, pero como la cuente una comedia a como la cuente un drama o una de terror seran muy diferentes.
+ + **'overview'** : voy a usar la descripción para alimentar al algorítmo de la idea del film, de información sobre la trama y el tono.
++ **'tagline'**: junto con overview me pude ayudar a dar una descripcion mas detallada.
++ **'spoken_languages'**: puede ayudar a recomendar peliculas en el mismo idioma, considerando que la mayoria son de habla inglesa, si un usuario prefiere peliculas en italiano, el algoritmo podria predecir en su lista al menos una o dos peliculas en dicho idioma, tendre que imputar algunos datos desde el campo 'original_language'.
++ **'decades'**: discreticé esta variable desde 'relese_year' para que el algoritmo pueda darle mas peso a peliculas en relacion a su epoca, por ejemplo si busca peliculas clasicas.
++ **'popularity'**: puede ser un factor muy importante par evitar recomendar peliculas que no sean conocidas.
++ **'vote_average'**: la idea es que ayude a seleccionar peliculas populares y con buenas criticas.
+
+<p align="center">
+<img src="https://github.com/paupallares/PI_ML_OPS/blob/main/src/boceto.png"  height=400>
+</p>
+
+**`Sistema de recomendación`**: :vertical_traffic_light: 
+
+El sistema consiste en recomendar películas a los usuarios basándose en películas similares, por lo que se debe encontrar la similitud de puntuación entre esa película y el resto de películas, se ordenarán según el score de similaridad y devolverá una lista de Python con 5 valores, cada uno siendo el string del nombre de las películas con mayor puntaje, en orden descendente. Las decisiones que tomé a la hora de construirlo están explicadas arriba en ***Decisiones tomadas***
+
+El modelo responde muy bien, con recomendaciones que aparentemente son muy idóneas. Ejemplos:
+
+
+
 <br/>
 
-## **Material de apoyo**
+**`Deployment`**: Realizado con [Render](https://render.com/docs/free#free-web-services), se puede acceder por este link: <a href="https://pi-ml-ops-3gcr.onrender.com/">Proyecto deployado</a>
 
-En este mismo repositorio podras encontrar algunos [links de ayuda](hhttps://github.com/HX-PRomero/PI_ML_OPS/raw/main/Material%20de%20apoyo.md). Recuerda que no son los unicos recursos que puedes utilizar!
+Lamentablemente render.com limita el uso de memoria RAM para suscripciones gratuitas :sleepy:  por lo que la recomendación en la API se hace con un dataset reducido. Puede pasar que la pelicula que quieran consultar no se encuentre en ese dataset. Pueden buscarla en la consulta recomendacionTEST pero esa consulta no evalua similaritud con un algorítmo de ML sino solo arroja los primeros 5 registros que coinciden con el género de la película ingresada. 
 
+<sub> Alguna películas presentes en el dataset reducido son: 'The Dukes', 'Dollman', 'Tom and Huck'. </sub>
 
-
-  
 <br/>
 
-## **Deadlines importantes**
+**`Video`**: :rocket:  
 
-+ Apertura de formularios de entrega de proyectos: **Lunes 15, 10:00 hs gmt -3**
 
-+ Cierre de formularios de entrega de proyectos: **Martes 16, 16:00hs gmt-3**
-  
-+ Demo: **Martes 16, 16:00hs gmt-3*** 
+
+<br/>
+
+####   <h2 id="tools" style="text-align: center;">HERRAMIENTAS USADAS :books:</h2>  
+
+
+
+   
+## <p align=center> :star_struck: MUCHAS GRACIAS :hugs: 
+
+<li><a href="https://www.linkedin.com/in/paupallares/">Linkedin</a></li>
+
+
 ``
