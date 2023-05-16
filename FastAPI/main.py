@@ -39,13 +39,7 @@ df_ml = pd.read_csv('../Datasets/dataset_ML.csv')
 
 #df reducido para el modelo de ML
 sm_df = df_ml.sample(n=2000, random_state=42) 
-vectorizerTF = TfidfVectorizer(analyzer='word', stop_words='english')
-tfidf_matrixTF = vectorizerTF.fit_transform(sm_df['texto_combinado'])
-coseno_sim_text = cosine_similarity(tfidf_matrixTF)
-vectorizer_features = CountVectorizer(stop_words='english')
-feature_matrix = vectorizer_features.fit_transform(sm_df['combined_features'])
-coseno_sim_features = cosine_similarity(feature_matrix)
-combined_similarity = 0.6 * coseno_sim_text + 0.4 * coseno_sim_features
+
 
 #Creamos un directorio index con mensaje de bienvenida
 @app.get("/", response_class=HTMLResponse)
@@ -171,7 +165,13 @@ def recomendacion(title:str):
         return "La película no está en el dataset reducido"
 
     idx = indices.index[0]
-    
+    vectorizerTF = TfidfVectorizer(analyzer='word', stop_words='english')
+    tfidf_matrixTF = vectorizerTF.fit_transform(sm_df['texto_combinado'])
+    coseno_sim_text = cosine_similarity(tfidf_matrixTF)
+    vectorizer_features = CountVectorizer(stop_words='english')
+    feature_matrix = vectorizer_features.fit_transform(sm_df['combined_features'])
+    coseno_sim_features = cosine_similarity(feature_matrix)
+    combined_similarity = 0.6 * coseno_sim_text + 0.4 * coseno_sim_features
     sim_scores = list(enumerate(combined_similarity[idx]))
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
     sim_scores = sim_scores[1:6]  # Obtenemos las 5 películas más similares
